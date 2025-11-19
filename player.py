@@ -1,5 +1,41 @@
 # Define the Player class.
 class Player():
+    """
+    This class represents the player.
+
+    Attributes:
+        name (str): The player's name.
+        current_room (Room | None): The player's current room, or
+            `None` if the player is not placed in any room.
+
+    Methods:
+        __init__(name): Initialize a player with a name.
+        move(direction): Attempts to move the player in the given
+            direction; returns `True` if the move succeeded, `False`
+            if the exit exists but is `None`.
+
+    Exceptions raised:
+        KeyError: If `direction` does not exist in the
+            `current_room.exits` dictionary (for example a typo in the
+            direction).
+        AttributeError: If `current_room` is `None` at the time of the
+            call (player has no assigned room).
+
+    Examples (doctest):
+        >>> from room import Room
+        >>> r1 = Room("Forest", "dans une forêt enchantée. Vous entendez une brise légère à travers la cime des arbres.")
+        >>> r2 = Room("Tower", "dans une immense tour en pierre qui s'élève au dessus des nuages.")
+        >>> r1.exits['E'] = r2
+        >>> r1.exits['N'] = None
+        >>> p = Player("Bassirou")
+        >>> p.current_room = r1
+        >>> p.move('E') is True
+        True
+        >>> p.current_room is r2
+        True
+        >>> p.move('N') is False
+        True
+     """
 
     # Define the constructor.
     def __init__(self, name):
