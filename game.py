@@ -30,32 +30,41 @@ class Game:
         
         # Setup rooms
 
-        forest = Room("Forest", "une forêt enchantée. Vous entendez une brise légère à travers la cime des arbres.")
-        self.rooms.append(forest)
-        tower = Room("Tower", "une immense tour en pierre qui s'élève au dessus des nuages.")
-        self.rooms.append(tower)
-        cave = Room("Cave", "une grotte profonde et sombre. Des voix semblent provenir des profondeurs.")
+        entry = Room("Entry", "l'entrée, son couloir  très étroit et ses vieux meubles rendent difficile les deplacements.")
+        self.rooms.append(entry)
+        kitchen = Room("Kitchen", "la cuisine, certains placards sont encore ouverts, remplis de rats et sens dessus dessous, est-ce normal ?")
+        self.rooms.append(kitchen)
+        living_room = Room("Living_room", "le salon, ces meubles à moitié vide, sa vieille télé éteinte et son fauteil avec une tâche... rouge !")
+        self.rooms.append(living_room)
+        dining_room = Room("Dining_room", "la salle à manger, la table semble à moitié mise et sa vaisselle plus que délabré.")
+        self.rooms.append(dining_room)
+        bedroom_1 = Room("Bedroom_1", "une chambre qui semble être celle d'un couple mariés. Les cadres des photos sont tous brisés." )
+        self.rooms.append(bedroom_1)
+        bedroom_2 = Room("Bedroom_2", "une chambre qui semble être celles d'enfants. Leurs jouets sont dispersés d'une manière pour le moins.. étrange.")
+        self.rooms.append(bedroom_2)
+        bathroom = Room("Bathroom", "la salle de bain, la baignoire est remplie d'une eau sale, et le miroir fissuré.")
+        self.rooms.append(bathroom)
+        office = Room("Office", "le bureau, ses meubles en bois massifs ornés de sculptures, et son miroir taille humaine avec trois têtes d'anges en son sommet rendent la poèce lugubre.")
+        self.rooms.append(office)
+        cave = Room("Cave", "une cave profonde et sombre. Une voix semblent provenir du fond de la salle.")
         self.rooms.append(cave)
-        cottage = Room("Cottage", "un petit chalet pittoresque avec un toit de chaume. Une épaisse fumée verte sort de la cheminée.")
-        self.rooms.append(cottage)
-        swamp = Room("Swamp", "un marécage sombre et ténébreux. L'eau bouillonne, les abords sont vaseux.")
-        self.rooms.append(swamp)
-        castle = Room("Castle", "un énorme château fort avec des douves et un pont levis. Sur les tours, des flèches en or massif.")
-        self.rooms.append(castle)
 
         # Create exits for rooms
 
-        forest.exits = {"N" : cave, "E" : None, "S" : castle, "O" : None}
-        tower.exits = {"N" : cottage, "E" : None, "S" : None, "O" : None}
-        cave.exits = {"N" : None, "E" : cottage, "S" : forest, "O" : None}
-        cottage.exits = {"N" : None, "E" : None, "S" : tower, "O" : cave}
-        swamp.exits = {"N" : tower, "E" : None, "S" : None, "O" : castle}
-        castle.exits = {"N" : forest, "E" : swamp, "S" : None, "O" : None}
+        entry.exits = {"N" : kitchen, "E" : None, "O" : living_room, "S" : None, "U" : office, "D" : cave}
+        kitchen.exits = {"N" : None, "E" : None, "O" : dining_room, "S" : entry, "U" : None, "D" : None}
+        living_room.exits = {"N" : dining_room, "E" : entry, "O" : None, "S" : None, "U" : None, "D" : None}
+        dining_room.exits = {"N" : None, "E" : kitchen, "O" : None, "S" : living_room, "U" : None, "D" : None}
+        bedroom_1.exits = {"N" : office, "E" : bathroom, "O" : None, "S" : None, "U" : None, "D" : None}
+        bedroom_2.exits = {"N" : None, "E" : None, "O" : office, "S" : bathroom, "U" : None, "D" : None}
+        bathroom.exits = {"N" : bedroom_2, "E" : None, "O" : bedroom_1, "S" : None, "U" : None, "D" : None}
+        office.exits = {"N" : None, "E" : bedroom_2, "O" : None, "S" : bedroom_1, "U" : None, "D" : entry}
+        cave.exits = {"N" : None, "E" : None, "O" : None, "S" : None, "U" : entry, "D" : None}
 
         # Setup player and starting room
 
         self.player = Player(input("\nEntrez votre nom: "))
-        self.player.current_room = swamp
+        self.player.current_room = entry
 
     # Play the game
     def play(self):
