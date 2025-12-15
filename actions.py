@@ -56,13 +56,33 @@ class Actions:
         # Get the direction from the list of words.
         directions_possibles = {'N', 'S', 'E', 'O', 'U', 'D'}
         direction = list_of_words[1]
-        direction = direction[0].upper()
+
+        match direction.upper():
+            case "N" | "NORD" :
+                direction = "N"
+            case "S" | "SUD" :
+                direction = "S"
+            case "E" | "EST" :
+                direction = "E"
+            case "O" | "OUEST" :
+                direction = "O"
+            case "U" | "UP" :
+                direction = "U"
+            case "D" | "DOWN" :
+                direction = "D"
+
 
         if direction not in directions_possibles :
             print(f"\nLa direction '{direction}' n'est pas reconnue, veuillez en saisir une valide.")
             return False
+
         # Move the player in the direction specified by the parameter.
         player.move(direction)
+
+        history_text = player.get_history()
+        if history_text :
+            print(history_text)
+
         return True
 
     def quit(game, list_of_words, number_of_parameters):
@@ -96,7 +116,7 @@ class Actions:
             command_word = list_of_words[0]
             print(MSG0.format(command_word=command_word))
             return False
-        
+
         # Set the finished attribute of the game object to True.
         player = game.player
         msg = f"\nMerci {player.name} d'avoir joué. Au revoir.\n"
@@ -142,4 +162,37 @@ class Actions:
         for command in game.commands.values():
             print("\t- " + str(command))
         print()
+        return True
+    
+    def history(game, list_of_words, number_of_parameters) :
+        if len(list_of_words)!= 1:#"history" sans paramètre
+            print(MSG0.format(command_word="history"))
+            return False
+        print(game.player.get_history())# Affiche l'historique du joueur
+        return True
+
+    def back(game, list_of_words, number_of_parameters) :
+
+        l = len(list_of_words)
+        if l != number_of_parameters + 1:
+            command_word = list_of_words[0]
+            print(MSG0.format(command_word=command_word))
+            return False
+        
+        player = game.player
+
+        # Impossible de revenir en arrière s'il n'y a qu'une seule pièce
+        if len(player.history) <= 1:
+            print("\nVous ne pouvez pas revenir en arrière.\n")
+            return False
+
+        # Retire la pièce actuelle
+        player.history.pop()
+
+        # Revenir à la pièce précédente
+        previous_room = player.history[-1]
+        player.current_room = previous_room
+
+        print(f"\n{previous_room.get_long_description()}\n" + f"{player.get_history()}\n")
+
         return True

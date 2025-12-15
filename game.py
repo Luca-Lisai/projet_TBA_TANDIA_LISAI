@@ -15,22 +15,27 @@ class Game:
         self.rooms = []
         self.commands = {}
         self.player = None
-    
+        self.history = []
+
     # Setup the game
     def setup(self):
-
+ 
         # Setup commands
 
         help = Command("help", " : afficher cette aide", Actions.help, 0)
         self.commands["help"] = help
         quit = Command("quit", " : quitter le jeu", Actions.quit, 0)
         self.commands["quit"] = quit
-        go = Command("go", " <direction> : se déplacer dans une direction cardinale (N, E, S, O)", Actions.go, 1)
+        go = Command("go", " <direction> : se déplacer dans une direction cardinale (N, E, S, O, U, D)", Actions.go, 1)
         self.commands["go"] = go
-        
+        history = Command("history", " affiche l'historique du joueur", Actions.history, 0)
+        self.commands["history"] = history
+        back = Command("back", " : revenir à la pièce précédente", Actions.back, 0)
+        self.commands["back"] = back
+
         # Setup rooms
 
-        entry = Room("Entry", "l'entrée, son couloir  très étroit et ses vieux meubles rendent difficile les deplacements.")
+        entry = Room("Entry", "l'entrée, son couloir très étroit et ses vieux meubles rendent difficile les deplacements.")
         self.rooms.append(entry)
         kitchen = Room("Kitchen", "la cuisine, certains placards sont encore ouverts, remplis de rats et sens dessus dessous, est-ce normal ?")
         self.rooms.append(kitchen)
@@ -95,6 +100,7 @@ class Game:
         else:
             command = self.commands[command_word]
             command.action(self, list_of_words, command.number_of_parameters)
+            
 
     # Print the welcome message
     def print_welcome(self):
@@ -102,12 +108,12 @@ class Game:
         print("Entrez 'help' si vous avez besoin d'aide.")
         #
         print(self.player.current_room.get_long_description())
-    
+
 
 def main():
     # Create a game object and play the game
     Game().play()
-    
+
 
 if __name__ == "__main__":
     main()

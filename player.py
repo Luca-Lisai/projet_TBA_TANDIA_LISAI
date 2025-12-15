@@ -1,3 +1,4 @@
+
 # Define the Player class.
 class Player():
     """
@@ -35,12 +36,13 @@ class Player():
         True
         >>> p.move('N') is False
         True
-     """
-
+    """
+     
     # Define the constructor.
     def __init__(self, name):
         self.name = name
         self.current_room = None
+        self.history = []
     
     # Define the move method.
     def move(self, direction):
@@ -51,10 +53,21 @@ class Player():
         if next_room is None:
             print("\nAucune porte dans cette direction !\n")
             return False
-        
+  
         # Set the current room to the next room.
+        self.history.append(self.current_room)
         self.current_room = next_room
         print(self.current_room.get_long_description())
         return True
 
-    
+    def get_history(self) : 
+        """Retourne l'historique des déplacements du joueur."""
+        if not self.history:
+            return "\nAucun déplacement enregistré.\n"
+       
+        lines = ["\nVous avez déjà visité les pièces suivantes:"]
+       # On exclut la pièce actuelle (dernière de la liste)
+        for room in self.history[::-1]:
+            lines.append(f"    - {room.description}")
+
+        return "\n".join(lines)
