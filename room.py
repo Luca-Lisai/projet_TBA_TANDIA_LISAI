@@ -26,12 +26,12 @@ class Room:
         >>> 'Sorties: E' in r1.get_long_description()
         True
     """
-    
-    # Define the constructor. 
+    # Define the constructor.
     def __init__(self, name, description):
         self.name = name
         self.description = description
         self.exits = {}
+        self.inventory = {}
     
     # Define the get_exit method.
     def get_exit(self, direction):
@@ -41,7 +41,7 @@ class Room:
             return self.exits[direction]
         else:
             return None
-    
+
     # Return a string describing the room's exits.
     def get_exit_string(self):
         exit_string = "Sorties: " 
@@ -54,3 +54,13 @@ class Room:
     # Return a long description of this room including exits.
     def get_long_description(self):
         return f"\nVous êtes dans {self.description}\n\n{self.get_exit_string()}\n"
+    
+    def get_inventory(self):
+        if not self.inventory :
+            return f"\nAucun objet dans cette piece\n"
+        lines = ["\nLa pièce contient :"]
+    
+    # Pour chaque objet dans l'inventaire
+        for key, item_obj in self.inventory.items():
+            lines.append(f"    - {item_obj}")
+        return "\n".join(lines) + "\n"

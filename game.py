@@ -6,6 +6,8 @@ from room import Room
 from player import Player
 from command import Command
 from actions import Actions
+from item import item
+
 
 class Game:
 
@@ -16,6 +18,7 @@ class Game:
         self.commands = {}
         self.player = None
         self.history = []
+        self.inventory = {}
 
     # Setup the game
     def setup(self):
@@ -32,6 +35,14 @@ class Game:
         self.commands["history"] = history
         back = Command("back", " : revenir à la pièce précédente", Actions.back, 0)
         self.commands["back"] = back
+        look = Command("look", " : affiche les items de la pièce", Actions.look, 0)
+        self.commands["look"] = look
+        take = Command("take", " : prend un objet de la pièce", Actions.take, 1)
+        self.commands["take"] = take
+        drop = Command("drop", " : déposer un objet dans la pièce", Actions.drop, 1)
+        self.commands["drop"] = drop
+        check = Command("check", " : affiche l'inventaire du joueur", Actions.check, 0)
+        self.commands["check"] = check
 
         # Setup rooms
 
@@ -66,6 +77,12 @@ class Game:
         office.exits = {"N" : None, "E" : bedroom_2, "O" : None, "S" : bedroom_1, "U" : None, "D" : entry}
         cave.exits = {"N" : None, "E" : None, "O" : None, "S" : None, "U" : entry, "D" : None}
 
+        #Create items for rooms
+        bedroom_1.inventory = {"flashlight": item("flashlight", "vieille lampe torche éclairant faiblement la zone ",1)}
+        self.inventory["flashlight"] = bedroom_1.inventory["flashlight"]
+
+        bathroom.inventory = {"screwdriver": item("screwdriver", "Tournevis à tête plate ", 0.5)}
+        self.inventory["screwdriver"] = bathroom.inventory["screwdriver"]
         # Setup player and starting room
 
         self.player = Player(input("\nEntrez votre nom: "))

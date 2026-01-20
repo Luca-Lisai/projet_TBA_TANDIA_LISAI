@@ -43,7 +43,9 @@ class Player():
         self.name = name
         self.current_room = None
         self.history = []
-    
+        self.inventory = {}
+        self.max_weight = 5
+        self.current_weight = 0.00    
     # Define the move method.
     def move(self, direction):
         # Get the next room from the exits dictionary of the current room.
@@ -64,10 +66,28 @@ class Player():
         """Retourne l'historique des déplacements du joueur."""
         if not self.history:
             return "\nAucun déplacement enregistré.\n"
-       
+
         lines = ["\nVous avez déjà visité les pièces suivantes:"]
        # On exclut la pièce actuelle (dernière de la liste)
         for room in self.history[::-1]:
             lines.append(f"    - {room.description}")
 
         return "\n".join(lines)
+    
+    def get_inventory(self):
+        if not self.inventory :
+            return "\n inventaire vide\n"
+        
+        lines = ["\n Vous disposez des objets suivants : "]
+
+        for key, item_obj in self.inventory.items():
+            lines.append(f"    - {item_obj}")
+        return "\n".join(lines) + "\n"
+    
+    def get_total_weight(self):
+        """Calcule le poids total de l'inventaire"""
+        total = 0.0
+        for item_obj in self.inventory.values():
+            total += item_obj.weight
+        return total
+    
