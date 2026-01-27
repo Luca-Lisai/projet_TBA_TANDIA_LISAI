@@ -1,5 +1,5 @@
+from debug import debug_print
 # Define the Room class.
-
 class Room:
     """
     This class represent a room. A room is composed of a name, a description and exits.
@@ -27,11 +27,15 @@ class Room:
         True
     """
     # Define the constructor.
-    def __init__(self, name, description):
+    def __init__(self, name, description, image):
         self.name = name
         self.description = description
+        self.image = image  # Path to image file (PNG/JPG) for this room
         self.exits = {}
         self.inventory = {}
+        self.character = {}
+
+        debug_print(f"Création de la pièce: {name}")
     
     # Define the get_exit method.
     def get_exit(self, direction):
@@ -56,11 +60,15 @@ class Room:
         return f"\nVous êtes dans {self.description}\n\n{self.get_exit_string()}\n"
     
     def get_inventory(self):
-        if not self.inventory :
-            return f"\nAucun objet dans cette piece\n"
+        if not self.inventory and not self.character :
+            return f"\nAucun objet ou personnage dans cette pièce\n"
         lines = ["\nLa pièce contient :"]
     
     # Pour chaque objet dans l'inventaire
         for key, item_obj in self.inventory.items():
             lines.append(f"    - {item_obj}")
+
+        for charac in self.character.values():
+            lines.append(f"     - {charac}")
+
         return "\n".join(lines) + "\n"
